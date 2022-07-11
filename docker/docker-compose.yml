@@ -1,0 +1,20 @@
+version: "0.1"
+services:
+  postgres:
+    image: postgres:14.4
+    environment:
+      POSTGRES_DB: "performeedb"
+      POSTGRES_USER: "performeepguser"
+      POSTGRES_PASSWORD: "kind6iVy"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "../sql/init.sql:/docker-entrypoint-initdb.d/init.sql"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U performeepguser -d performeedb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
